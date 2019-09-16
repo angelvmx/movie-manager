@@ -10,39 +10,56 @@
 
 using namespace std;
 
-TEST(MetaDataProcessorTests, ProcessMovies_PassEmptyMovieList_ReturnEmptyResult)
+class MetaDataProcessorTests : public ::testing::Test
 {
-	TheMovieDbDataFactory dataFactory;
-	TheMovieDbRepository repository(MY_API_KEY, dataFactory);
-	MetaDataProcessor processor(repository);
+	TheMovieDbDataFactory dataFacory;
+	TheMovieDbRepository* repository;
+public:
+	MetaDataProcessorTests() {
+		repository = new TheMovieDbRepository(MY_API_KEY, dataFacory);
+	}
+
+	~MetaDataProcessorTests() {
+		delete repository;
+	}
+protected:
+	MetaDataProcessor* processor;
+
+	virtual void SetUp()
+	{
+		processor = new MetaDataProcessor(*repository);
+	}
+
+	virtual void TearDown()
+	{
+		delete processor;
+	}
+};
+
+TEST_F(MetaDataProcessorTests, ProcessMovies_PassEmptyMovieList_ReturnEmptyResult)
+{
 	Movies result;
 
-	processor.ProcessMovies({}, result);
+	processor->ProcessMovies({}, result);
 
 	ASSERT_EQ(0, result.size());
 }
 
-TEST(MetaDataProcessorTests, DISABLED_ProcessMovies_PassValidMovie_ReturnMovieData)
+TEST_F(MetaDataProcessorTests, DISABLED_ProcessMovies_PassValidMovie_ReturnMovieData)
 {
-	TheMovieDbDataFactory dataFactory;
-	TheMovieDbRepository repository(MY_API_KEY, dataFactory);
-	MetaDataProcessor processor(repository);
 	Movies result;
 
-	processor.ProcessMovies({ "Batman Begins" }, result);
+	processor->ProcessMovies({ "Batman Begins" }, result);
 
 	EXPECT_EQ(1, result.size());
 	EXPECT_EQ(result[0]->GetTitle(), "Batman Begins");
 }
 
-TEST(MetaDataProcessorTests, DISABLED_ProcessMovies_PassValidMovies_ReturnAllMoviesData)
+TEST_F(MetaDataProcessorTests, DISABLED_ProcessMovies_PassValidMovies_ReturnAllMoviesData)
 {
-	TheMovieDbDataFactory dataFactory;
-	TheMovieDbRepository repository(MY_API_KEY, dataFactory);
-	MetaDataProcessor processor(repository);
 	Movies result;
 
-	processor.ProcessMovies({ "Batman Begins", "Apocalypse Now", "Dumb and Dumber" }, result);
+	processor->ProcessMovies({ "Batman Begins", "Apocalypse Now", "Dumb and Dumber" }, result);
 
 	EXPECT_EQ(3, result.size());
 	EXPECT_EQ(result[0]->GetTitle(), "Batman Begins");
