@@ -1,8 +1,7 @@
 #include "stdafx.h"
 #include "MovieData.h"
 
-
-MovieData::MovieData()
+MovieData::MovieData(): m_length(0)
 {
 }
 
