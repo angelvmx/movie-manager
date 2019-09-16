@@ -21,3 +21,32 @@ TEST(StringHtmlEncoderTests, Encode_StringWithMultipleSpaces_ReplaceSpacesWithEn
 
 	ASSERT_EQ("A%2fB%2fC%2fD", result);
 }
+
+struct EncoderTestRow
+{
+	EncoderTestRow(std::string input, std::string expected) : input(input), expected(expected) {}
+
+	std::string input, expected;
+};
+
+::std::ostream& operator<<(::std::ostream& os, EncoderTestRow& row)
+{
+	return os << "input: " << row.input << " expected result: " << row.expected;
+}
+
+class StringHtmlEncoderTests : public ::testing::TestWithParam<EncoderTestRow> {};
+
+TEST_P(StringHtmlEncoderTests, EncodeStringToHtml)
+{
+	auto row = GetParam();
+
+	auto result = StringHtmlEncoder::Encode(row.input);
+
+	ASSERT_EQ(row.expected, result);
+}
+
+INSTANTIATE_TEST_CASE_P(WhiteSpaceEncoding, StringHtmlEncoderTests, ::testing::Values(
+	EncoderTestRow("A", "A"),
+	EncoderTestRow("A B", "A%2fB"),
+	EncoderTestRow("A B C D", "A%2fB%2fC%2fD")
+));
