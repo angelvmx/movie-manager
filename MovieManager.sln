@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MovieDataFetcherTests", "Mo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MovieDataFetcherRunner", "MovieDataFetcherRunner\MovieDataFetcherRunner.vcxproj", "{0972E04E-91DF-444C-B2C7-ECD8B2F14623}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MovieDataFetcherMSTest", "MovieDataFetcherMSTest\MovieDataFetcherMSTest.vcxproj", "{C346477D-AA34-4630-B5AC-D267228E2BA9}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MovieDataFetcherCatch", "MovieDataFetcherCatch\MovieDataFetcherCatch.vcxproj", "{D923419C-F16F-41D6-89DC-5895FAD4CA2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -38,6 +42,22 @@ Global
 		{0972E04E-91DF-444C-B2C7-ECD8B2F14623}.Release|x64.Build.0 = Release|x64
 		{0972E04E-91DF-444C-B2C7-ECD8B2F14623}.Release|x86.ActiveCfg = Release|Win32
 		{0972E04E-91DF-444C-B2C7-ECD8B2F14623}.Release|x86.Build.0 = Release|Win32
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Debug|x64.ActiveCfg = Debug|x64
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Debug|x64.Build.0 = Debug|x64
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Debug|x86.ActiveCfg = Debug|Win32
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Debug|x86.Build.0 = Debug|Win32
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Release|x64.ActiveCfg = Release|x64
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Release|x64.Build.0 = Release|x64
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Release|x86.ActiveCfg = Release|Win32
+		{C346477D-AA34-4630-B5AC-D267228E2BA9}.Release|x86.Build.0 = Release|Win32
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Debug|x64.ActiveCfg = Debug|x64
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Debug|x64.Build.0 = Debug|x64
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Debug|x86.ActiveCfg = Debug|Win32
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Debug|x86.Build.0 = Debug|Win32
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Release|x64.ActiveCfg = Release|x64
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Release|x64.Build.0 = Release|x64
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Release|x86.ActiveCfg = Release|Win32
+		{D923419C-F16F-41D6-89DC-5895FAD4CA2B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
