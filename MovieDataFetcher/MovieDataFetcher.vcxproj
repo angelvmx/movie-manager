@@ -139,6 +139,7 @@
   <ItemGroup>
     <ClInclude Include="ErrorRepository.h" />
     <ClInclude Include="FileErrorRepository.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="InvalidInputException.h" />
     <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="MetaDataProcessor.h" />

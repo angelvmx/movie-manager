@@ -1,11 +1,17 @@
 #include "stdafx.h"
 #include "MetaDataProcessor.h"
 #include "MovieData.h"
+#include <fstream>
 
-MetaDataProcessor::MetaDataProcessor(MovieMetaDataRepository& jsonClient) : m_repository(jsonClient)
+MetaDataProcessor::MetaDataProcessor(MovieMetaDataRepository& repository) :
+	MetaDataProcessor(repository, std::make_shared<LoggerFactory>())
 {
 }
 
+MetaDataProcessor::MetaDataProcessor(MovieMetaDataRepository& repository, std::shared_ptr<LoggerFactory> loggerFactory)
+	: m_repository(repository), m_loggerFactory(loggerFactory)
+{
+}
 
 MetaDataProcessor::~MetaDataProcessor()
 {
@@ -27,7 +33,7 @@ void MetaDataProcessor::ProcessMovies(const std::vector<std::string>& movieNames
 			result.push_back(movieData);
 		}catch(...)
 		{
-			// TODO: error handling
+			m_loggerFactory->CreateLogger()->LogError(movieName);
 		}
 	}
 }
