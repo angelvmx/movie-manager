@@ -7,7 +7,7 @@
 TEST(TheMovieDbRepositoryTests, FindMovieData_ApiReturnEmptyString_ThrowException)
 {
 	TheMovieDbDataFactory factory;
-	FakeRestApiClient fakeClient("");
+	FakeRestApiClient fakeClient;
 
 	TheMovieDbRepository repository("api-key", factory, fakeClient);
 
@@ -18,7 +18,7 @@ TEST(TheMovieDbRepositoryTests, FindMovieData_ApiReturnEmptyString_ThrowExceptio
 TEST(TheMovieDbRepositoryTests, FindMovieData_ApiReturnsStringWithoutMovie_ThrowException)
 {
 	TheMovieDbDataFactory factory;
-	FakeRestApiClient fakeClient("{}");
+	FakeRestApiClient fakeClient;
 
 	TheMovieDbRepository repository("api-key", factory, fakeClient);
 
