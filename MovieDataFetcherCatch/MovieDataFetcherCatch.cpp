@@ -14,7 +14,8 @@
 TEST_CASE("ProcessMovies returns movie data")
 {
 	TheMovieDbDataFactory factory;
-	TheMovieDbRepository repository(MY_API_KEY, factory);
+	RestApiClient client;
+	TheMovieDbRepository repository(MY_API_KEY, factory, client);
 	MetaDataProcessor processor(repository);
 
 	Movies result;

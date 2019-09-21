@@ -5,8 +5,8 @@ class RestApiClient
 {
 public:
 	RestApiClient();
-	~RestApiClient();
+	virtual ~RestApiClient();
 
-	std::string HttpGet(std::string& url);
+	virtual std::string HttpGet(std::string& url);
 };
 

@@ -9,7 +9,8 @@
 int main()
 {
 	TheMovieDbDataFactory dataFactory;
-	TheMovieDbRepository repository(MY_API_KEY, dataFactory);
+	RestApiClient client;
+	TheMovieDbRepository repository(MY_API_KEY, dataFactory, client);
 	MetaDataProcessor processor(repository);
 
 	Movies result;

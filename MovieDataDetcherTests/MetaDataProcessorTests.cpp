@@ -14,9 +14,11 @@ class MetaDataProcessorTests : public ::testing::Test
 {
 	TheMovieDbDataFactory dataFacory;
 	TheMovieDbRepository* repository;
+	RestApiClient client;
+
 public:
 	MetaDataProcessorTests() {
-		repository = new TheMovieDbRepository(MY_API_KEY, dataFacory);
+		repository = new TheMovieDbRepository(MY_API_KEY, dataFacory, client);
 	}
 
 	~MetaDataProcessorTests() {

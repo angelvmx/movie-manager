@@ -7,11 +7,10 @@
 
 using namespace std;
 
-TheMovieDbRepository::TheMovieDbRepository(const string& apiKey, const MovieDataFactory& movieDataFactory): 
-m_apiKey(apiKey), m_movieDataFactory(movieDataFactory)
+TheMovieDbRepository::TheMovieDbRepository(const string& apiKey, const MovieDataFactory& movieDataFactory, RestApiClient & client): 
+m_apiKey(apiKey), m_movieDataFactory(movieDataFactory), m_client(client)
 {
 }
-
 
 TheMovieDbRepository::~TheMovieDbRepository()
 {

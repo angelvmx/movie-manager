@@ -15,11 +15,12 @@ namespace MovieDataFetcherMSTest
 		TheMovieDbDataFactory dataFactory;
 		TheMovieDbRepository* repository;
 		MetaDataProcessor* processor;
+		RestApiClient client;
 
 	public:
 		MetaDataProcessorTests()
 		{
-			repository = new TheMovieDbRepository(MY_API_KEY, dataFactory);
+			repository = new TheMovieDbRepository(MY_API_KEY, dataFactory, client);
 			processor = new MetaDataProcessor(*repository);
 		}
 

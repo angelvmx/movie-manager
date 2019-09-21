@@ -24,6 +24,9 @@
     <ClInclude Include="ApiKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FakeRestApiClient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -42,6 +45,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TheMovieDbDataFactoryTests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TheMovieDbRepositoryTests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
