@@ -27,6 +27,15 @@
     <ClInclude Include="FakeRestApiClient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FakeLogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FakeLoggerFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FakeMovieMetaDataRepository.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

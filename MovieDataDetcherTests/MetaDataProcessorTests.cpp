@@ -4,32 +4,33 @@
 #include <vector>
 #include "MetaDataProcessor.h"
 #include "MovieData.h"
-#include "TheMovieDbRepository.h"
 #include "ApiKey.h"
 #include "TheMovieDbDataFactory.h"
+#include "FakeLogger.h"
+#include "FakeLoggerFactory.h"
+#include "FakeMovieMetaDataRepository.h"
+#include "MovieNotFoundException.h"
 
 using namespace std;
+using namespace testing;
 
-class MetaDataProcessorTests : public ::testing::Test
+class MetaDataProcessorTests : public Test
 {
-	TheMovieDbDataFactory dataFacory;
-	TheMovieDbRepository* repository;
-	RestApiClient client;
+	shared_ptr<FakeLogger> fakeLogger;
+	shared_ptr<FakeLoggerFactory> fakeLoggerFactory;
 
-public:
-	MetaDataProcessorTests() {
-		repository = new TheMovieDbRepository(MY_API_KEY, dataFacory, client);
-	}
 
-	~MetaDataProcessorTests() {
-		delete repository;
-	}
 protected:
-	MetaDataProcessor* processor;
+	MetaDataProcessor* processor;	
+	FakeMovieMetaDataRepository repository;
 
 	virtual void SetUp()
 	{
-		processor = new MetaDataProcessor(*repository);
+		fakeLoggerFactory = make_shared<FakeLoggerFactory>();
+		fakeLogger = make_shared<FakeLogger>();
+		ON_CALL(*fakeLoggerFactory, CreateLogger()).WillByDefault(testing::Return(fakeLogger));
+
+		processor = new MetaDataProcessor(repository, fakeLoggerFactory);
 	}
 
 	virtual void TearDown()
@@ -67,4 +68,15 @@ TEST_F(MetaDataProcessorTests, DISABLED_ProcessMovies_PassValidMovies_ReturnAllM
 	EXPECT_EQ(result[0]->GetTitle(), "Batman Begins");
 	EXPECT_EQ(result[1]->GetTitle(), "Apocalypse Now");
 	EXPECT_EQ(result[2]->GetTitle(), "Dumb and Dumber");
+}
+
+TEST_F(MetaDataProcessorTests, ProcessMovies_ExceptionThrownDuringProcess_WriteLog)
+{
+	Movies result;
+	MovieNotFoundException testException("My Movie");
+	EXPECT_CALL(repository, FindMovieData(_)).WillRepeatedly(Throw(testException));
+
+	processor->ProcessMovies({"MyMovie"}, result);
+
+	ASSERT_EQ(0, result.size());
 }

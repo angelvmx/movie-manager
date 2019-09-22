@@ -33,7 +33,9 @@ void MetaDataProcessor::ProcessMovies(const std::vector<std::string>& movieNames
 			result.push_back(movieData);
 		}catch(...)
 		{
-			m_loggerFactory->CreateLogger()->LogError(movieName);
+			auto logger = m_loggerFactory->CreateLogger();
+
+			logger->LogError(movieName);
 		}
 	}
 }
