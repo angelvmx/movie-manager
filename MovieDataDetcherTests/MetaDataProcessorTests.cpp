@@ -16,11 +16,10 @@ using namespace testing;
 
 class MetaDataProcessorTests : public Test
 {
-	shared_ptr<FakeLogger> fakeLogger;
 	shared_ptr<FakeLoggerFactory> fakeLoggerFactory;
 
-
 protected:
+	shared_ptr<FakeLogger> fakeLogger;
 	MetaDataProcessor* processor;	
 	FakeMovieMetaDataRepository repository;
 
@@ -75,8 +74,9 @@ TEST_F(MetaDataProcessorTests, ProcessMovies_ExceptionThrownDuringProcess_WriteL
 	Movies result;
 	MovieNotFoundException testException("My Movie");
 	EXPECT_CALL(repository, FindMovieData(_)).WillRepeatedly(Throw(testException));
+	EXPECT_CALL(*fakeLogger, LogError("My Movie")).Times(AtLeast(1));
 
-	processor->ProcessMovies({"MyMovie"}, result);
+	processor->ProcessMovies({"My Movie"}, result);
 
 	ASSERT_EQ(0, result.size());
 }
