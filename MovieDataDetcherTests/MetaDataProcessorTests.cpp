@@ -25,7 +25,7 @@ protected:
 
 	virtual void SetUp()
 	{
-		fakeLoggerFactory = make_shared<FakeLoggerFactory>();
+		fakeLoggerFactory = make_shared<NiceMock<FakeLoggerFactory>>();
 		fakeLogger = make_shared<FakeLogger>();
 		ON_CALL(*fakeLoggerFactory, CreateLogger()).WillByDefault(testing::Return(fakeLogger));
 
