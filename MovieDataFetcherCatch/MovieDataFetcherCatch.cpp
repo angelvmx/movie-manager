@@ -1,24 +1,27 @@
-// MovieDataFetcherCatch.cpp : Este archivo contiene la función "main". La ejecución del programa comienza y termina ahí.
-//
-
 #include "stdafx.h"
 
-#define CATCH_CONFIG_MAIN
 #include "Catch/catch.hpp"
-#include "ApiKey.h"
-#include "MetaDataProcessor.h"
-#include "MovieData.h"
-#include "TheMovieDbRepository.h"
-#include "TheMovieDbDataFactory.h"
 
+#include "MetaDataProcessor.h"
+#include "TheMovieDbDataFactory.h"
+#include "Fakes.h"
+#include "MovieNotFoundException.h"
+
+using namespace std;
+using namespace testing;
 TEST_CASE("ProcessMovies returns movie data")
 {
 	TheMovieDbDataFactory factory;
-	RestApiClient client;
-	TheMovieDbRepository repository(MY_API_KEY, factory, client);
-	MetaDataProcessor processor(repository);
+
+	auto fakeLoggerFactory = make_shared<NiceMock<FakeLoggerFactory>>();
+	auto fakeLogger = make_shared<FakeLogger>();
+	ON_CALL(*fakeLoggerFactory, CreateLogger()).WillByDefault(Return(fakeLogger));
+
+	FakeMovieMetaDataRepository fakeRepository;
+	MetaDataProcessor processor(fakeRepository, fakeLoggerFactory);
 
 	Movies result;
+
 	SECTION("Return empty result for empty list")
 	{
 		processor.ProcessMovies({}, result);
@@ -26,21 +29,13 @@ TEST_CASE("ProcessMovies returns movie data")
 		REQUIRE(result.size() == 0);
 	}
 
-	SECTION("Get result for one movie")
+	SECTION("Log exceptions thrown during processing")
 	{
-		processor.ProcessMovies({"Batman Begins"}, result);
+		MovieNotFoundException testException("My Movie");
+		EXPECT_CALL(fakeRepository, FindMovieData(_)).WillRepeatedly(Throw(testException));
+		EXPECT_CALL(*fakeLogger, LogError("My Movie")).Times(0);
 
-		CHECK(result.size() == 1);
-		REQUIRE(result[0]->GetTitle() == "Batman Begins");
-	}
-
-	SECTION("Get results for several movies")
-	{
-		processor.ProcessMovies({"Batman Begins", "Apocalypse Now", "Dumb and Dumber"}, result);
-
-		CHECK(result.size() == 3);
-		CHECK(result[0]->GetTitle() == "Batman Begins");
-		CHECK(result[1]->GetTitle() == "Apocalypse Now");
-		CHECK(result[2]->GetTitle() == "Dumb and Dumber");
+		processor.ProcessMovies({"My Movie"}, result);
+		ASSERT_EQ(0, result.size());
 	}
 }
