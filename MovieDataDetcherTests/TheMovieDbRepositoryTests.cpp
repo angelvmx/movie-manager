@@ -37,12 +37,11 @@ TEST(TheMovieDbRepositoryTests, FindMovieData_ApiReturnsValidData_ReturnMovieRes
 	const char* movieList = "{\"page\":1,\"results\":[{\"id\":123,\"title\":\"my movie title\"}],\"total_results\":1,\"total_pages\":1}";
 	const char* movieMeta = "{\"imdb_id\":\"myId\",\"title\":\"my movie title\",\"overview\":\"this is a plot\",\"runtime\":180}";
 
-	std::string firstQuery = "http://api.themoviedb.org/3/search/movie?api_key=1234&page=1&query=my%2fmovie%2ftitle";
-	std::string secondQuery = "http://api.themoviedb.org/3/movie/123?api_key=1234";
 	TheMovieDbDataFactory factory;
 	FakeRestApiClient fakeClient;
 
-	EXPECT_CALL(fakeClient, HttpGet(_)).WillOnce(Return(movieList)).WillOnce(Return(movieMeta));
+	EXPECT_CALL(fakeClient, HttpGet(HasSubstr("search/movie"))).WillOnce(Return(movieList));
+	EXPECT_CALL(fakeClient, HttpGet(HasSubstr("movie/123"))).WillOnce(Return(movieMeta));
 
 	TheMovieDbRepository repository(fictiveApiKey, factory, fakeClient);
 
