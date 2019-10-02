@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "TheMovieDbDataFactory.h"
+#include <gmock/gmock-matchers.h>
+#include <gmock/gmock-generated-matchers.h>
 
 TEST(TheMovieDbDataFactoryTests, CreateFromJson_PassEmptyString_ReturnEmptyClass)
 {
@@ -50,8 +52,5 @@ TEST(TheMovieDbDataFactoryTests, GetActorList_PassValidStringWithSeveralActors_R
 	std::vector<std::string> result;
 	factory.GetActors(input, result);
 
-	EXPECT_EQ(3, result.size());
-	EXPECT_EQ("John Smith", result[0]);
-	EXPECT_EQ("Jane Doe", result[1]);
-	EXPECT_EQ("Some Guy", result[2]);
+	ASSERT_THAT(result, testing::UnorderedElementsAre("John Smith", "Jane Doe", "Some Guy"));
 }
