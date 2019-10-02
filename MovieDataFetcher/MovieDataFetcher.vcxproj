@@ -137,6 +137,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ErrorParsingMovieDataException.h" />
     <ClInclude Include="ErrorRepository.h" />
     <ClInclude Include="FileErrorRepository.h" />
     <ClInclude Include="Logger.h" />

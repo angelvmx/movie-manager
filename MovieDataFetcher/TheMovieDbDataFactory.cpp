@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "TheMovieDbDataFactory.h"
-#include <rapidjson/document.h>
 #include "SettableMovieData.h"
-
+#include <rapidjson/document.h>
+#include "ErrorParsingMovieDataException.h"
 
 TheMovieDbDataFactory::TheMovieDbDataFactory()
 {
@@ -13,6 +13,33 @@ TheMovieDbDataFactory::~TheMovieDbDataFactory()
 {
 }
 
+void TheMovieDbDataFactory::GetActors(const std::string& jsonString, std::vector<std::string>& result) const
+{
+	rapidjson::Document jsonDocument;
+	jsonDocument.Parse(jsonString.c_str());
+
+	if (!jsonDocument.IsObject())
+	{
+		throw ErrorParsingMovieDataException();
+	}
+
+	try
+	{
+		auto cast = jsonDocument["cast"].GetArray();
+
+		for (auto& actor : cast)
+		{
+			auto name = actor["name"].GetString();
+			result.push_back(name);
+		}
+	}
+	catch (...)
+	{
+		throw ErrorParsingMovieDataException();
+	}
+
+}
+
 std::shared_ptr<MovieData> TheMovieDbDataFactory::CreateFromJson(const std::string& jsonString) const
 {
 	try
@@ -21,7 +48,7 @@ std::shared_ptr<MovieData> TheMovieDbDataFactory::CreateFromJson(const std::stri
 		jsonDocument.Parse(jsonString.c_str());
 		if (!jsonDocument.IsObject())
 		{
-			return std::make_shared<SettableMovieData>();;
+			throw ErrorParsingMovieDataException();
 		}
 
 		auto imdbId = jsonDocument["imdb_id"].GetString();
@@ -39,7 +66,6 @@ std::shared_ptr<MovieData> TheMovieDbDataFactory::CreateFromJson(const std::stri
 	}
 	catch (...)
 	{
+		throw ErrorParsingMovieDataException();
 	}
-
-	return std::make_shared<SettableMovieData>();
 }
