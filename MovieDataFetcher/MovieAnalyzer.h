@@ -14,11 +14,18 @@ public:
 	MovieAnalyzer(MovieMetaDataRepository& repository, DataLayer& dal) : m_repository(repository), m_dal(dal) {}
 	~MovieAnalyzer() {}
 
+	virtual std::shared_ptr<Logger> CreateLogger();
 	void ProcessFromFile(TStream& filestream);
 
 private:
 	static void ReadFile(TStream& filestream, std::vector<std::basic_string<char>>& movieNames);
 };
+
+template <class TStream>
+std::shared_ptr<Logger> MovieAnalyzer<TStream>::CreateLogger()
+{
+	return std::make_shared<FileLogger>();
+}
 
 template <class TStream>
 void MovieAnalyzer<TStream>::ProcessFromFile(TStream& filestream)
@@ -36,7 +43,8 @@ void MovieAnalyzer<TStream>::ProcessFromFile(TStream& filestream)
 	{
 		if (m_dal.MovieExist(movie->GetTitle()))
 		{
-			m_dal.Update(movie);
+			auto logger = CreateLogger();
+			logger->LogWarning("Movie already exist in DB");
 		}
 		else
 		{

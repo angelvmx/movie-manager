@@ -1,6 +1,8 @@
 #include "MovieAnalyzer.h"
 #include <gtest/gtest.h>
 #include "FakeMovieMetaDataRepository.h"
+#include "SettableMovieData.h"
+#include "FakeLogger.h"
 
 using namespace testing;
 
@@ -39,6 +41,38 @@ TEST(MovieAnalyzerTests, ProcessFromFile_FileIsEmpty_DoNotCallDB)
 	NiceMock<FakeStream> fakeStream;
 	EXPECT_CALL(fakeStream, is_open()).WillRepeatedly(Return(true));
 	EXPECT_CALL(fakeStream, eof()).WillRepeatedly(Return(true));
+
+	analyzer.ProcessFromFile(fakeStream);
+}
+
+class MovieAnalyzerForTests : public MovieAnalyzer<FakeStream>
+{
+public:
+	MovieAnalyzerForTests(MovieMetaDataRepository& repository, DataLayer& dal) :
+		MovieAnalyzer<FakeStream>(repository, dal) {};
+
+	MOCK_METHOD0(CreateLogger, std::shared_ptr<Logger>());
+};
+
+TEST(MovieAnalyzerTests, ProcessFromFile_FileHaveOneExistingMovie_LogWarning)
+{
+	auto movieData = std::make_shared <SettableMovieData>();
+	FakeMovieMetaDataRepository fakeRepository;
+	EXPECT_CALL(fakeRepository, FindMovieData(_)).WillRepeatedly(Return(movieData));
+
+	FakeDataLayer fakeDataLayer;
+	EXPECT_CALL(fakeDataLayer, MovieExist(_)).WillRepeatedly(Return(true));
+
+	MovieAnalyzerForTests analyzer(fakeRepository, fakeDataLayer);
+
+	auto fakeLogger = std::make_shared<FakeLogger>();
+	EXPECT_CALL(*fakeLogger, LogWarning("Movie already exist in DB")).Times(1);
+	EXPECT_CALL(analyzer, CreateLogger()).WillRepeatedly(Return(fakeLogger));
+
+	NiceMock<FakeStream> fakeStream;
+	EXPECT_CALL(fakeStream, is_open()).WillRepeatedly(Return(true));
+	EXPECT_CALL(fakeStream, eof()).WillOnce(Return(false)).WillOnce(Return(true));
+	EXPECT_CALL(fakeStream, getstring()).WillOnce(Return("My movie title"));
 
 	analyzer.ProcessFromFile(fakeStream);
 }
