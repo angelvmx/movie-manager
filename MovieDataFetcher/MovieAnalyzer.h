@@ -4,6 +4,7 @@
 #include "DAL.h"
 #include "FileNotFoundException.h"
 
+template <class TStream>
 class MovieAnalyzer
 {
 	MovieMetaDataRepository& m_repository;
@@ -12,13 +13,14 @@ public:
 	MovieAnalyzer(MovieMetaDataRepository& repository) : m_repository(repository) {}
 	~MovieAnalyzer() {}
 
-	void ProcessFromFile(std::ifstream& filestream);
+	void ProcessFromFile(TStream& filestream);
 
 private:
-	static void ReadFile(std::ifstream& filestream, std::vector<std::basic_string<char>>& movieNames);
+	static void ReadFile(TStream& filestream, std::vector<std::basic_string<char>>& movieNames);
 };
 
-void MovieAnalyzer::ProcessFromFile(std::ifstream& filestream)
+template <class TStream>
+void MovieAnalyzer<TStream>::ProcessFromFile(TStream& filestream)
 {
 	std::vector<std::string> movieNames;
 
@@ -43,7 +45,8 @@ void MovieAnalyzer::ProcessFromFile(std::ifstream& filestream)
 
 }
 
-void MovieAnalyzer::ReadFile(std::ifstream& filestream, std::vector<std::basic_string<char>>& movieNames)
+template <class TStream>
+void MovieAnalyzer<TStream>::ReadFile(TStream& filestream, std::vector<std::basic_string<char>>& movieNames)
 {
 	char movieName[1024];
 
