@@ -8,9 +8,10 @@ template <class TStream>
 class MovieAnalyzer
 {
 	MovieMetaDataRepository& m_repository;
+	DataLayer &m_dal;
 
 public:
-	MovieAnalyzer(MovieMetaDataRepository& repository) : m_repository(repository) {}
+	MovieAnalyzer(MovieMetaDataRepository& repository, DataLayer& dal) : m_repository(repository), m_dal(dal) {}
 	~MovieAnalyzer() {}
 
 	void ProcessFromFile(TStream& filestream);
@@ -33,13 +34,13 @@ void MovieAnalyzer<TStream>::ProcessFromFile(TStream& filestream)
 
 	for (auto movie : result)
 	{
-		if (DAL::MovieExist(movie->GetTitle()))
+		if (m_dal.MovieExist(movie->GetTitle()))
 		{
-			DAL::Update(movie);
+			m_dal.Update(movie);
 		}
 		else
 		{
-			DAL::Create(movie);
+			m_dal.Create(movie);
 		}
 	}
 
