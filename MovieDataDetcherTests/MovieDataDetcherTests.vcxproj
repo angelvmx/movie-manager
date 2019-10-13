@@ -161,6 +161,7 @@
     <ClCompile Include="JsonHelperTests.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MetaDataProcessorTests.cpp" />
+    <ClCompile Include="MovieAnalyzerTests.cpp" />
     <ClCompile Include="TheMovieDbRepositoryTests.cpp" />
     <ClCompile Include="TheMovieDbDataFactoryTests.cpp" />
     <ClCompile Include="StringHtmlEncoderTests.cpp" />

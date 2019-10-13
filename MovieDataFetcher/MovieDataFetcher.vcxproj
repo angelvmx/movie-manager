@@ -137,17 +137,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="DAL.h" />
     <ClInclude Include="ErrorParsingMovieDataException.h" />
     <ClInclude Include="ErrorRepository.h" />
     <ClInclude Include="FileErrorRepository.h" />
+    <ClInclude Include="FileNotFoundException.h" />
     <ClInclude Include="Logger.h" />
     <ClInclude Include="InvalidInputException.h" />
     <ClInclude Include="JsonHelper.h" />
     <ClInclude Include="MetaDataProcessor.h" />
+    <ClInclude Include="MovieAnalyzer.h" />
     <ClInclude Include="MovieData.h" />
     <ClInclude Include="MovieDataFactory.h" />
     <ClInclude Include="MovieMetaDataRepository.h" />
     <ClInclude Include="MovieNotFoundException.h" />
+    <ClInclude Include="NotImplementedException.h" />
     <ClInclude Include="RestApiClient.h" />
     <ClInclude Include="SettableMovieData.h" />
     <ClInclude Include="stdafx.h" />
@@ -157,6 +161,7 @@
     <ClInclude Include="TheMovieDbRepository.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DAL.cpp" />
     <ClCompile Include="FileErrorRepository.cpp" />
     <ClCompile Include="JsonHelper.cpp" />
     <ClCompile Include="MetaDataProcessor.cpp" />
